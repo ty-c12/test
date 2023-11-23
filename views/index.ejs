@@ -1,0 +1,54 @@
+<html>
+    <title>
+        Image Share - Home
+    </title>
+    <link rel = "stylesheet" type = "text/css" href = "style.css"/>
+    <body>
+        <h1>Image Share</h1>
+        <nav>
+            <div class = "navigation">
+                <a href = "/">Home</a>
+                <a href = "/create">Upload</a>
+                <a href = "/search">Search</a>
+                <a href = "/profile/<%= name %>">Profile</a>
+                <a href = "/logout" style = "float: right">Logout</a>
+            </div>
+        </nav>
+        <h2>Welcome, <%= name %></h2>
+        <% if (!userPost || userPost.length == 0) {%> <!-- Render when user has no posts -->
+            <h3>You have no post yet!</h3><br>
+            <p>Click <a href = "/create">here</a> to create a post.</p>
+        <% } else { %>
+            <h3>Your latest post:</h3>
+            Click <a href = "/post/<%= userPost._id %>">here</a> to read the full post. <!-- direct to the latest post with its objectid -->
+            <table class = "imagePost">
+                <tr>
+                    <td id = "date">Date: <%= userPost.date %></td>
+                </tr>
+                <tr>
+                    <td id = "imgData"><img src = "data:image/jpeg; base64, <%= userPost.data %>" /></td>
+                </tr>
+            </table>
+            <table class = "commentTable">
+                <tr>
+                    <th colspan = "2">Like: <%= postLike.length %></th>
+                </tr>
+                <tr>
+                    <th style = "padding: 0" colspan = "2">Comments (<%= postComment.length %>):</th>
+                </tr>
+                <% if (postComment && postComment.length > 0) {%>
+                    <% for (var i = 0; i < 2 && i < postComment.length; i++) { %>
+                        <tr>
+                            <td id = "commentUser"><a href = "/profile/<%= postComment[i][0] %>"><%= postComment[i][0] %></a></td>
+                            <td id = "comment"><%= postComment[i][1]%></td>
+                        </tr>
+                    <% }; %>
+                <% } else { %>
+                    <tr>
+                        <td colspan = "2">No comments yet.</td>
+                    </tr>
+                <% } %>
+            </table>
+        <% } %>
+    </body>
+</html>

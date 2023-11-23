@@ -1,0 +1,150 @@
+<html>
+    <title>
+        Image Share - Post
+    </title>
+    <style>
+        h1 {
+            font-family: Helvetica, sans-serif;
+        }
+
+        body {
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #date {
+            color: darkgray;
+            text-align: right;
+        }
+
+        .navigation {
+            background-color: #515671;
+            overflow: hidden;
+        }
+
+        .navigation a {
+            color: white;
+            float: left;
+            padding: 12px 15px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 600ms;
+        }
+
+        .navigation a:hover {
+            background-color: #717691;
+        }
+
+        .imagePost {
+            width: 100%;
+        }
+
+        .imagePost img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 80%;
+        }
+
+        #deletePost {
+            text-align: right;
+        }
+
+        .commentTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .commentTable th {
+            text-align: left;
+            padding: 10px 5% 10px;
+        }
+
+        .commentTable td {
+            border: 1px solid lightgray;
+            padding: 10px 10px 10px;
+        }
+
+        #commentUser {
+            width: 10%;
+            padding: 10px 0 10px;
+            text-align: center;
+        }
+
+        #comment {
+            width: 90%;
+        }
+
+        #commentBox {
+            width: 100%;
+            height: 90px;
+            resize: none;
+        }
+
+        #deleteComment {
+            float: right;
+            width: 10%;
+        }
+    </style>
+    <body>
+        <h1>Image Share</h1>
+        <nav>
+            <div class = "navigation">
+                <a href = "/">Home</a>
+                <a href = "/create">Upload</a>
+                <a href = "/search">Search</a>
+                <a href = "/profile/<%= currentUser %>">Profile</a>
+                <a href = "/logout" style = "float: right">Logout</a>
+            </div>
+        </nav>
+        <table class = "imagePost">
+            <tr>
+                <td><b>Poster:</b> <a href = "/profile/<%= post.username %>"><%= post.username %></a></td>
+                <td id = "date">Date: <%= post.date %></td>
+            </tr>
+            <% if (currentUser == post.username) { %>
+                <tr>
+                    <td colspan = "2" id = "deletePost">
+                        <form action = "/post/<%= post._id %>?method=DELETE" method = "POST">
+                            <button type = "submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% } %>
+            <tr>
+                <td id = "imageData" colspan = "2"><img src = "data:image/jpeg; base64, <%= post.data %>" /></td>
+            </tr>
+        </table>
+        <table class = "commentTable">
+            <tr>
+                <th colspan = "2">
+                    <form method = "POST" action = "/post/<%= post._id %>/like?method=PUT">
+                        <button type = "submit" name = "like" value = "like">Like</button>: <%= postLike.length %>
+                    </form>
+                </th>
+            </tr>
+            <tr>
+                <th style = "padding: 0" colspan = "2">Comments (<%= postComment.length %>):</th>
+            </tr>
+            <% if (postComment && postComment.length > 0) {%>
+                <% for (var i = 0; i < postComment.length; i++) { %>
+                    <tr>
+                        <td id = "commentUser"><a href = "/profile/<%= postComment[i][0] %>"><%= postComment[i][0] %></a></td>
+                        <td id = "comment"><%= postComment[i][1]%></td>
+                    </tr>
+                <% }; %>
+            <% } else { %>
+                <tr>
+                    <td colspan = "2">No comments yet.</td>
+                </tr>
+            <% } %>
+        </table>
+        <table class = "commentField">
+            <tr>
+                <form method = "POST" action = "/post/<%= post._id %>/comment?method=PUT">
+                    <textarea id = "commentBox" name = "commentText" required></textarea><br/>
+                    <button type = "submit" name = "postComment" value = "comment">Comment</button>
+                </form>
+            </tr>            
+        </table>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+{
+    "name": "imageshare",
+    "description": "group project",
+    "author": "group 25",
+    "version": "0.0.1",
+    "dependencies": {
+        "express": "*",
+        "ejs": "*",
+        "body-parser": "*",
+        "cookie-session": "*",
+        "mongodb": "*",
+        "express-fileupload": "*",
+	    "nodemon": "3.0.1"
+    },
+    "engine": "node >= 16.20.1",
+    "scripts": {
+        "start": "node server"
+    }
+}
